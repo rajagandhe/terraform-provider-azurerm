@@ -2,8 +2,8 @@ package mariadb
 
 import (
 	"fmt"
+	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/services/mariadb/validate"
 	"log"
-	"regexp"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2018-06-01/mariadb"
@@ -43,13 +43,10 @@ func resourceArmMariaDbConfiguration() *schema.Resource {
 			"resource_group_name": azure.SchemaResourceGroupName(),
 
 			"server_name": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-				ValidateFunc: validation.StringMatch(
-					regexp.MustCompile("^[-a-zA-Z0-9]{3,50}$"),
-					"server_name must be 3 - 50 characters long, and contain only letters, numbers and hyphens",
-				),
+				Type:         schema.TypeString,
+				Required:     true,
+				ForceNew:     true,
+				ValidateFunc: validate.MariaDbServerServerName,
 			},
 
 			"value": {
